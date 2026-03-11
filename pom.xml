@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.apps</groupId>
+    <artifactId>quantitymeasurement</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <properties>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>5.10.0</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.1.2</version>
+            </plugin>
+        </plugins>
+    </build>
+</project>
+        ```
+
+        3. IntelliJ will show a popup — click **"Load Maven Project"** ✅
+
+        ---
+
+        ## STEP 5: Create the Folder Structure
+
+        In IntelliJ, right-click the project → you need to create these folders:
+        ```
+        src
+        ├── main
+        │    └── java
+        │         └── com
+        │              └── apps
+        │                   └── quantitymeasurement
+        └── test
+        └── java
+        └── com
+        └── apps
+        └── quantitymeasurement
+        ```
+
+        Here's how:
+        1. Right-click `src` folder (or create it) → **New → Directory**
+        2. Type `main/java/com/apps/quantitymeasurement` → hit Enter
+        3. Right-click `src` again → **New → Directory**
+        4. Type `test/java/com/apps/quantitymeasurement` → hit Enter
+
+        ---
+
+        ## STEP 6: Create the Java Files
+
+        **Main class:**
+        1. Right-click `src/main/java/com/apps/quantitymeasurement` → **New → Java Class**
+        2. Name it `QuantityMeasurementApp`
+        3. Delete everything and paste the code from the file I gave you earlier
+
+        **Test class:**
+        1. Right-click `src/test/java/com/apps/quantitymeasurement` → **New → Java Class**
+        2. Name it `QuantityMeasurementAppTest`
+        3. Delete everything and paste the test code from the file I gave you earlier
+
+        ---
+
+        ## STEP 7: Add .gitignore File
+
+        1. Right-click the **root project folder** → **New → File** → name it `.gitignore`
+        2. Paste this:
+        ```
+        .idea/
+        *.class
+        *.jar
+        /target/
+        /bin/
+        /build/

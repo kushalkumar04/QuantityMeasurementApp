@@ -1,10 +1,18 @@
+/**
+ * QuantityMeasurementAppTest - UC2: Feet and Inches measurement equality tests
+ */
+
 package com.apps.quantitymeasurement;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
+
 import com.apps.quantitymeasurement.QuantityMeasurementApp.Feet;
+import com.apps.quantitymeasurement.QuantityMeasurementApp.Inches;
 
 public class QuantityMeasurementAppTest {
+
+    // ==================== FEET TESTS (from UC1) ====================
 
     @Test
     public void testFeetEquality_SameValue() {
@@ -37,19 +45,38 @@ public class QuantityMeasurementAppTest {
         Feet feet1 = new Feet(1.0);
         assertTrue(feet1.equals(feet1), "A Feet object should be equal to itself");
     }
+
+    // ==================== INCHES TESTS (new in UC2) ====================
+
+    @Test
+    public void testInchesEquality_SameValue() {
+        Inches inch1 = new Inches(1.0);
+        Inches inch2 = new Inches(1.0);
+        assertTrue(inch1.equals(inch2), "1.0 inch should be equal to 1.0 inch");
+    }
+
+    @Test
+    public void testInchesEquality_DifferentValue() {
+        Inches inch1 = new Inches(1.0);
+        Inches inch2 = new Inches(2.0);
+        assertFalse(inch1.equals(inch2), "1.0 inch should not be equal to 2.0 inch");
+    }
+
+    @Test
+    public void testInchesEquality_NullComparison() {
+        Inches inch1 = new Inches(1.0);
+        assertFalse(inch1.equals(null), "An Inches object should not be equal to null");
+    }
+
+    @Test
+    public void testInchesEquality_DifferentClass() {
+        Inches inch1 = new Inches(1.0);
+        assertFalse(inch1.equals("one inch"), "An Inches object should not be equal to a String");
+    }
+
+    @Test
+    public void testInchesEquality_SameReference() {
+        Inches inch1 = new Inches(1.0);
+        assertTrue(inch1.equals(inch1), "An Inches object should be equal to itself");
+    }
 }
-```
-
-        ---
-
-        ## STEP 8: Run the Tests
-
-        1. Right-click on `QuantityMeasurementAppTest.java` in the left panel
-        2. Click **Run 'QuantityMeasurementAppTest'**
-        3. A panel opens at the bottom — you should see **5 green ticks ✅** like this:
-        ```
-        ✅ testFeetEquality_SameValue
-        ✅ testFeetEquality_DifferentValue
-        ✅ testFeetEquality_NullComparison
-        ✅ testFeetEquality_DifferentClass
-        ✅ testFeetEquality_SameReference

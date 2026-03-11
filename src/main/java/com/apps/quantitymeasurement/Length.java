@@ -1,9 +1,9 @@
 /**
- * Length - UC3: Generic Quantity Class for DRY Principle
+ * Length - UC5: Unit-to-Unit Conversion
  *
- * Represents a length measurement with a value and unit type.
- * Eliminates code duplication from UC1 and UC2 by using a single class
- * with an enum to handle multiple unit types.
+ * A generic class for representing and comparing lengths in different units.
+ * All conversions use INCHES as the base unit.
+ * Values are rounded to two decimal places for deterministic equality checks.
  */
 
 package com.apps.quantitymeasurement;
@@ -13,13 +13,17 @@ public class Length {
     private double value;
     private LengthUnit unit;
 
-    // Enum to represent different length units and their conversion factors
-    // Base unit is INCHES. All conversion factors are defined in terms of inches.
+    /**
+     * Enum representing different length units and their conversion factors.
+     * Base unit is INCHES. All factors are relative to inches.
+     * Example: 1 FOOT = 12.0 inches, 1 YARD = 36.0 inches, 1 CM = 0.393701 inches
+     */
     public enum LengthUnit {
         FEET(12.0),
         INCHES(1.0),
         YARDS(36.0),
         CENTIMETERS(0.393701);
+
         private final double conversionFactor;
 
         LengthUnit(double conversionFactor) {
@@ -31,23 +35,53 @@ public class Length {
         }
     }
 
-    // Constructor to initialize length value and unit
+    /**
+     * Constructor to initialize length value and unit.
+     */
     public Length(double value, LengthUnit unit) {
         this.value = value;
         this.unit = unit;
     }
 
-    // Convert the length value to the base unit (inches)
+    /**
+     * Private utility method: converts this length to base unit (inches) with rounding.
+     * Rounds to 2 decimal places for consistent equality checks.
+     */
     private double convertToBaseUnit() {
-        return value * unit.getConversionFactor();
+        double result = value * unit.getConversionFactor();
+        return Math.round(result * 100.0) / 100.0;
     }
 
-    // Compare two Length objects for equality based on their values in base unit
-    public boolean compare(Length thatLength) {
+    /**
+     * Private helper method: compares two Length objects by their base unit values.
+     */
+    private boolean compare(Length thatLength) {
         return Double.compare(this.convertToBaseUnit(), thatLength.convertToBaseUnit()) == 0;
     }
 
-    // Equals method - checks reference, null, class, then calls compare()
+    /**
+     * Converts this length to the specified target unit.
+     * Returns a new Length instance (immutability guaranteed).
+     *
+     * @param targetUnit the unit to convert to (must not be null)
+     * @return new Length instance in the target unit
+     * @throws IllegalArgumentException if targetUnit is null
+     */
+    public Length convertTo(LengthUnit targetUnit) {
+        if (targetUnit == null) {
+            throw new IllegalArgumentException("Target unit must not be null");
+        }
+        // Convert to base unit (inches) first, then to target unit
+        double inBaseUnit = value * unit.getConversionFactor();
+        double convertedValue = inBaseUnit / targetUnit.getConversionFactor();
+        double rounded = Math.round(convertedValue * 100.0) / 100.0;
+        return new Length(rounded, targetUnit);
+    }
+
+    /**
+     * Overridden equals() method.
+     * Two lengths are equal if their base unit values (rounded) are the same.
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -57,14 +91,23 @@ public class Length {
         return this.compare(thatLength);
     }
 
+    /**
+     * Overridden toString() for readable output.
+     * Format: "value UNIT" e.g. "12.00 INCHES"
+     */
+    @Override
+    public String toString() {
+        return String.format("%.2f %s", value, unit);
+    }
+
     // Main method for standalone testing
     public static void main(String[] args) {
-        Length length1 = new Length(1.0, LengthUnit.FEET);
-        Length length2 = new Length(12.0, LengthUnit.INCHES);
-        System.out.println("Are 1.0 feet and 12.0 inches equal? " + length1.equals(length2)); // true
+        Length feet = new Length(1.0, LengthUnit.FEET);
+        Length inches = feet.convertTo(LengthUnit.INCHES);
+        System.out.println("1.0 FEET converted to INCHES: " + inches);
 
-        Length length3 = new Length(1.0, LengthUnit.INCHES);
-        Length length4 = new Length(1.0, LengthUnit.INCHES);
-        System.out.println("Are 1.0 inch and 1.0 inch equal? " + length3.equals(length4)); // true
+        Length yards = new Length(3.0, LengthUnit.YARDS);
+        Length feetConverted = yards.convertTo(LengthUnit.FEET);
+        System.out.println("3.0 YARDS converted to FEET: " + feetConverted);
     }
 }

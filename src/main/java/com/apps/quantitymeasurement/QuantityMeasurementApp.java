@@ -1,6 +1,8 @@
 /**
- * QuantityMeasurementApp - UC4: Extended Unit Support
- * Adds Yards and Centimeters to the existing Length class.
+ * QuantityMeasurementApp - UC5: Unit-to-Unit Conversion
+ *
+ * Extends UC4 to provide explicit unit conversion between length units.
+ * Uses method overloading for demonstrateLengthConversion().
  */
 
 package com.apps.quantitymeasurement;
@@ -9,52 +11,64 @@ import com.apps.quantitymeasurement.Length.LengthUnit;
 
 public class QuantityMeasurementApp {
 
+    /**
+     * Demonstrates equality between two Length instances.
+     */
     public static boolean demonstrateLengthEquality(Length length1, Length length2) {
         return length1.equals(length2);
     }
 
-    public static void demonstrateFeetEquality() {
-        Length feet1 = new Length(1.0, LengthUnit.FEET);
-        Length feet2 = new Length(1.0, LengthUnit.FEET);
-        System.out.println("Are 1.0 ft and 1.0 ft equal? " + feet1.equals(feet2));
+    /**
+     * Demonstrates equality using raw values and units.
+     */
+    public static boolean demonstrateLengthComparison(
+            double value1, LengthUnit unit1,
+            double value2, LengthUnit unit2) {
+        Length l1 = new Length(value1, unit1);
+        Length l2 = new Length(value2, unit2);
+        return demonstrateLengthEquality(l1, l2);
     }
 
-    public static void demonstrateInchesEquality() {
-        Length inch1 = new Length(1.0, LengthUnit.INCHES);
-        Length inch2 = new Length(1.0, LengthUnit.INCHES);
-        System.out.println("Are 1.0 inch and 1.0 inch equal? " + inch1.equals(inch2));
+    /**
+     * Method Overload 1: Convert using raw value and units.
+     * demonstrateLengthConversion(3.0, FEET, INCHES)
+     */
+    public static Length demonstrateLengthConversion(
+            double value, LengthUnit fromUnit, LengthUnit toUnit) {
+        if (fromUnit == null || toUnit == null) {
+            throw new IllegalArgumentException("Units must not be null");
+        }
+        Length source = new Length(value, fromUnit);
+        return source.convertTo(toUnit);
     }
 
-    public static void demonstrateFeetInchesComparison() {
-        Length feet1 = new Length(1.0, LengthUnit.FEET);
-        Length inch1 = new Length(12.0, LengthUnit.INCHES);
-        System.out.println("Are 1.0 ft and 12.0 inches equal? " + feet1.equals(inch1));
-    }
-
-    public static void demonstrateYardsComparison() {
-        Length yard1 = new Length(1.0, LengthUnit.YARDS);
-        Length feet1 = new Length(3.0, LengthUnit.FEET);
-        System.out.println("Are 1.0 yard and 3.0 feet equal? " + yard1.equals(feet1));
-
-        Length inch1 = new Length(36.0, LengthUnit.INCHES);
-        System.out.println("Are 1.0 yard and 36.0 inches equal? " + yard1.equals(inch1));
-    }
-
-    public static void demonstrateCentimetersComparison() {
-        Length cm1 = new Length(1.0, LengthUnit.CENTIMETERS);
-        Length inch1 = new Length(0.393701, LengthUnit.INCHES);
-        System.out.println("Are 1.0 cm and 0.393701 inches equal? " + cm1.equals(inch1));
-
-        Length cm2 = new Length(2.0, LengthUnit.CENTIMETERS);
-        Length cm3 = new Length(2.0, LengthUnit.CENTIMETERS);
-        System.out.println("Are 2.0 cm and 2.0 cm equal? " + cm2.equals(cm3));
+    /**
+     * Method Overload 2: Convert using existing Length instance.
+     * demonstrateLengthConversion(lengthInYards, INCHES)
+     */
+    public static Length demonstrateLengthConversion(Length length, LengthUnit toUnit) {
+        if (toUnit == null) {
+            throw new IllegalArgumentException("Target unit must not be null");
+        }
+        return length.convertTo(toUnit);
     }
 
     public static void main(String[] args) {
-        demonstrateFeetEquality();
-        demonstrateInchesEquality();
-        demonstrateFeetInchesComparison();
-        demonstrateYardsComparison();
-        demonstrateCentimetersComparison();
+        // Overload 1: convert 3.0 feet to inches
+        Length result1 = demonstrateLengthConversion(3.0, LengthUnit.FEET, LengthUnit.INCHES);
+        System.out.println("3.0 FEET to INCHES: " + result1);
+
+        // Overload 2: convert yards object to inches
+        Length yards = new Length(2.0, LengthUnit.YARDS);
+        Length result2 = demonstrateLengthConversion(yards, LengthUnit.INCHES);
+        System.out.println("2.0 YARDS to INCHES: " + result2);
+
+        // Conversion examples
+        System.out.println("1.0 FEET to INCHES: " +
+                demonstrateLengthConversion(1.0, LengthUnit.FEET, LengthUnit.INCHES));
+        System.out.println("36.0 INCHES to YARDS: " +
+                demonstrateLengthConversion(36.0, LengthUnit.INCHES, LengthUnit.YARDS));
+        System.out.println("1.0 CM to INCHES: " +
+                demonstrateLengthConversion(1.0, LengthUnit.CENTIMETERS, LengthUnit.INCHES));
     }
 }

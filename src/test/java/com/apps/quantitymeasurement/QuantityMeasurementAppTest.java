@@ -1,5 +1,5 @@
 /**
- * QuantityMeasurementAppTest - UC2: Feet and Inches measurement equality tests
+ * QuantityMeasurementAppTest - UC3: Generic Quantity Class tests
  */
 
 package com.apps.quantitymeasurement;
@@ -7,76 +7,75 @@ package com.apps.quantitymeasurement;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-import com.apps.quantitymeasurement.QuantityMeasurementApp.Feet;
-import com.apps.quantitymeasurement.QuantityMeasurementApp.Inches;
+import com.apps.quantitymeasurement.Length.LengthUnit;
 
 public class QuantityMeasurementAppTest {
 
-    // ==================== FEET TESTS (from UC1) ====================
-
     @Test
-    public void testFeetEquality_SameValue() {
-        Feet feet1 = new Feet(1.0);
-        Feet feet2 = new Feet(1.0);
-        assertTrue(feet1.equals(feet2), "1.0 ft should be equal to 1.0 ft");
+    public void testFeetEquality() {
+        Length feet1 = new Length(1.0, LengthUnit.FEET);
+        Length feet2 = new Length(1.0, LengthUnit.FEET);
+        assertTrue(feet1.equals(feet2), "1.0 ft should equal 1.0 ft");
     }
 
     @Test
-    public void testFeetEquality_DifferentValue() {
-        Feet feet1 = new Feet(1.0);
-        Feet feet2 = new Feet(2.0);
-        assertFalse(feet1.equals(feet2), "1.0 ft should not be equal to 2.0 ft");
+    public void testInchesEquality() {
+        Length inch1 = new Length(1.0, LengthUnit.INCHES);
+        Length inch2 = new Length(1.0, LengthUnit.INCHES);
+        assertTrue(inch1.equals(inch2), "1.0 inch should equal 1.0 inch");
     }
 
     @Test
-    public void testFeetEquality_NullComparison() {
-        Feet feet1 = new Feet(1.0);
-        assertFalse(feet1.equals(null), "A Feet object should not be equal to null");
+    public void testFeetInchesComparison() {
+        Length feet1 = new Length(1.0, LengthUnit.FEET);
+        Length inch1 = new Length(12.0, LengthUnit.INCHES);
+        assertTrue(feet1.equals(inch1), "1.0 ft should equal 12.0 inches");
     }
 
     @Test
-    public void testFeetEquality_DifferentClass() {
-        Feet feet1 = new Feet(1.0);
-        assertFalse(feet1.equals("one foot"), "A Feet object should not be equal to a String");
+    public void testInchToFeet_EquivalentValue() {
+        Length inch1 = new Length(12.0, LengthUnit.INCHES);
+        Length feet1 = new Length(1.0, LengthUnit.FEET);
+        assertTrue(inch1.equals(feet1), "12.0 inches should equal 1.0 ft (symmetry)");
     }
 
     @Test
-    public void testFeetEquality_SameReference() {
-        Feet feet1 = new Feet(1.0);
-        assertTrue(feet1.equals(feet1), "A Feet object should be equal to itself");
-    }
-
-    // ==================== INCHES TESTS (new in UC2) ====================
-
-    @Test
-    public void testInchesEquality_SameValue() {
-        Inches inch1 = new Inches(1.0);
-        Inches inch2 = new Inches(1.0);
-        assertTrue(inch1.equals(inch2), "1.0 inch should be equal to 1.0 inch");
+    public void testFeetInequality() {
+        Length feet1 = new Length(1.0, LengthUnit.FEET);
+        Length feet2 = new Length(2.0, LengthUnit.FEET);
+        assertFalse(feet1.equals(feet2), "1.0 ft should not equal 2.0 ft");
     }
 
     @Test
-    public void testInchesEquality_DifferentValue() {
-        Inches inch1 = new Inches(1.0);
-        Inches inch2 = new Inches(2.0);
-        assertFalse(inch1.equals(inch2), "1.0 inch should not be equal to 2.0 inch");
+    public void testInchesInequality() {
+        Length inch1 = new Length(1.0, LengthUnit.INCHES);
+        Length inch2 = new Length(2.0, LengthUnit.INCHES);
+        assertFalse(inch1.equals(inch2), "1.0 inch should not equal 2.0 inch");
     }
 
     @Test
-    public void testInchesEquality_NullComparison() {
-        Inches inch1 = new Inches(1.0);
-        assertFalse(inch1.equals(null), "An Inches object should not be equal to null");
+    public void testCrossUnitInequality() {
+        Length feet1 = new Length(1.0, LengthUnit.FEET);
+        Length inch1 = new Length(1.0, LengthUnit.INCHES);
+        assertFalse(feet1.equals(inch1), "1.0 ft should not equal 1.0 inch");
     }
 
     @Test
-    public void testInchesEquality_DifferentClass() {
-        Inches inch1 = new Inches(1.0);
-        assertFalse(inch1.equals("one inch"), "An Inches object should not be equal to a String");
+    public void testSameReference() {
+        Length feet1 = new Length(1.0, LengthUnit.FEET);
+        assertTrue(feet1.equals(feet1), "A Length object should equal itself");
     }
 
     @Test
-    public void testInchesEquality_SameReference() {
-        Inches inch1 = new Inches(1.0);
-        assertTrue(inch1.equals(inch1), "An Inches object should be equal to itself");
+    public void testNullComparison() {
+        Length feet1 = new Length(1.0, LengthUnit.FEET);
+        assertFalse(feet1.equals(null), "A Length object should not equal null");
+    }
+
+    @Test
+    public void testMultipleFeetComparison() {
+        Length feet1 = new Length(2.0, LengthUnit.FEET);
+        Length inch1 = new Length(24.0, LengthUnit.INCHES);
+        assertTrue(feet1.equals(inch1), "2.0 ft should equal 24.0 inches");
     }
 }

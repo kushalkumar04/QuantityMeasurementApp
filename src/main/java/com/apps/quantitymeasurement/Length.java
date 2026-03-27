@@ -18,17 +18,7 @@ public class Length {
      * Base unit is INCHES. All factors are relative to inches.
      * Example: 1 FOOT = 12.0 inches, 1 YARD = 36.0 inches, 1 CM = 0.393701 inches
      */
-    public enum LengthUnit {
-        FEET(12.0),
-        INCHES(1.0),
-        YARDS(36.0),
-        CENTIMETERS(0.393701);
 
-        private final double conversionFactor;
-
-        LengthUnit(double conversionFactor) {
-            this.conversionFactor = conversionFactor;
-        }
 
         public double getConversionFactor() {
             return conversionFactor;

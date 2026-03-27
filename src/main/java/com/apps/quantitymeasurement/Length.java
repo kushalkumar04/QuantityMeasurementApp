@@ -77,7 +77,39 @@ public class Length {
         double rounded = Math.round(convertedValue * 100.0) / 100.0;
         return new Length(rounded, targetUnit);
     }
+    /**
+     * UC6: Adds another Length to this Length.
+     * Result is returned in the unit of the FIRST operand.
+     *
+     * Steps:
+     * 1. Convert both values to base unit (INCHES)
+     * 2. Add them
+     * 3. Convert result back to this.unit
+     * 4. Return new Length object
+     */
+    public Length add(Length thatLength) {
 
+        // Validation
+        if (thatLength == null) {
+            throw new IllegalArgumentException("Second length must not be null");
+        }
+
+        // Step 1: Convert both to base unit (INCHES)
+        double base1 = this.convertToBaseUnit();
+        double base2 = thatLength.convertToBaseUnit();
+
+        // Step 2: Add
+        double sumBase = base1 + base2;
+
+        // Step 3: Convert back to THIS unit
+        double result = sumBase / this.unit.getConversionFactor();
+
+        // Round to 2 decimal places (VERY IMPORTANT for your tests)
+        double rounded = Math.round(result * 100.0) / 100.0;
+
+        // Step 4: Return new object (immutability)
+        return new Length(rounded, this.unit);
+    }
     /**
      * Overridden equals() method.
      * Two lengths are equal if their base unit values (rounded) are the same.

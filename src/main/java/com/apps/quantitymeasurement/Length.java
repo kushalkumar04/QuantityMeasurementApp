@@ -110,6 +110,37 @@ public class Length {
         // Step 4: Return new object (immutability)
         return new Length(rounded, this.unit);
     }
+
+    /**
+     * UC7: Add two lengths with explicit target unit
+     *
+     * @param thatLength length to add
+     * @param targetUnit unit in which result should be returned
+     * @return new Length in target unit
+     */
+    public Length add(Length thatLength, LengthUnit targetUnit) {
+
+        // Validation
+        if (thatLength == null || targetUnit == null) {
+            throw new IllegalArgumentException("Length and target unit must not be null");
+        }
+
+        // Step 1: Convert both to base unit (INCHES)
+        double base1 = this.convertToBaseUnit();
+        double base2 = thatLength.convertToBaseUnit();
+
+        // Step 2: Add
+        double sumBase = base1 + base2;
+
+        // Step 3: Convert to TARGET UNIT
+        double result = sumBase / targetUnit.getConversionFactor();
+
+        // Step 4: Round (IMPORTANT for tests)
+        double rounded = Math.round(result * 100.0) / 100.0;
+
+        // Step 5: Return new object
+        return new Length(rounded, targetUnit);
+    }
     /**
      * Overridden equals() method.
      * Two lengths are equal if their base unit values (rounded) are the same.

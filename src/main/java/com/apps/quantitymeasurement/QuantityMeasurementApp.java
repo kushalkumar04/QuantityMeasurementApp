@@ -4,9 +4,10 @@
  */
 
 package com.apps.quantitymeasurement;
-
-import com.apps.quantitymeasurement.controller.QuantityMeasurementController;
+import com.apps.quantitymeasurement.repository.QuantityMeasurementDatabaseRepository;
 import com.apps.quantitymeasurement.repository.QuantityMeasurementRepository;
+import com.apps.quantitymeasurement.controller.QuantityMeasurementController;
+import com.apps.quantitymeasurement.repository.QuantityMeasurementCacheRepository;
 import com.apps.quantitymeasurement.service.QuantityMeasurementService;
 import com.apps.quantitymeasurement.service.QuantityMeasurementServiceImpl;
 
@@ -17,8 +18,8 @@ public class QuantityMeasurementApp {
         /*
          * Dependency initialization
          */
-        QuantityMeasurementRepository repository =
-                new QuantityMeasurementRepository();
+        QuantityMeasurementCacheRepository repository =
+                new QuantityMeasurementCacheRepository();
 
         QuantityMeasurementService service =
                 new QuantityMeasurementServiceImpl(

@@ -8,15 +8,15 @@ package com.apps.quantitymeasurement.service;
 import com.apps.quantitymeasurement.IMeasurable;
 import com.apps.quantitymeasurement.Quantity;
 import com.apps.quantitymeasurement.model.QuantityMeasurementEntity;
-import com.apps.quantitymeasurement.repository.QuantityMeasurementRepository;
+import com.apps.quantitymeasurement.repository.QuantityMeasurementCacheRepository;
 
 public class QuantityMeasurementServiceImpl
         implements QuantityMeasurementService {
 
-    private final QuantityMeasurementRepository repository;
+    private final QuantityMeasurementCacheRepository repository;
 
     public QuantityMeasurementServiceImpl(
-            QuantityMeasurementRepository repository
+            QuantityMeasurementCacheRepository repository
     ) {
 
         this.repository = repository;

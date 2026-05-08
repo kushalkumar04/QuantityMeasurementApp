@@ -1,9 +1,9 @@
-package com.apps.quantitymeasurement;
-
 /*
  * Generic quantity class supporting
- * measurable unit conversions and equality.
+ * measurable unit conversions and arithmetic operations.
  */
+
+package com.apps.quantitymeasurement;
 
 public class Quantity<U extends IMeasurable> {
 
@@ -45,6 +45,97 @@ public class Quantity<U extends IMeasurable> {
                 Math.round(convertedValue * 100.0) / 100.0;
 
         return new Quantity<>(rounded, targetUnit);
+    }
+
+    /*
+     * Adds two quantities.
+     */
+    public Quantity<U> add(Quantity<U> other) {
+
+        double result =
+                performBaseArithmetic(
+                        other,
+                        ArithmeticOperation.ADD
+                );
+
+        double converted =
+                unit.convertFromBaseUnit(result);
+
+        double rounded =
+                Math.round(converted * 100.0) / 100.0;
+
+        return new Quantity<>(rounded, unit);
+    }
+
+    /*
+     * Subtracts two quantities.
+     */
+    public Quantity<U> subtract(Quantity<U> other) {
+
+        double result =
+                performBaseArithmetic(
+                        other,
+                        ArithmeticOperation.SUBTRACT
+                );
+
+        double converted =
+                unit.convertFromBaseUnit(result);
+
+        double rounded =
+                Math.round(converted * 100.0) / 100.0;
+
+        return new Quantity<>(rounded, unit);
+    }
+
+    /*
+     * Divides two quantities.
+     */
+    public double divide(Quantity<U> other) {
+
+        return performBaseArithmetic(
+                other,
+                ArithmeticOperation.DIVIDE
+        );
+    }
+
+    /*
+     * Performs arithmetic operation
+     * using base unit conversion.
+     */
+    private double performBaseArithmetic(
+            Quantity<U> other,
+            ArithmeticOperation operation
+    ) {
+
+        validateQuantity(other);
+
+        double thisBase =
+                this.convertToBaseUnit();
+
+        double otherBase =
+                other.convertToBaseUnit();
+
+        return operation.compute(
+                thisBase,
+                otherBase
+        );
+    }
+
+    /*
+     * Validates compatible quantities.
+     */
+    private void validateQuantity(Quantity<U> other) {
+
+        if (other == null) {
+            throw new IllegalArgumentException("Quantity cannot be null");
+        }
+
+        if (!this.unit.getClass().equals(other.unit.getClass())) {
+
+            throw new IllegalArgumentException(
+                    "Incompatible quantity types"
+            );
+        }
     }
 
     @Override
